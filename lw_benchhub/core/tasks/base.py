@@ -22,7 +22,12 @@ import lazy_import
 import numpy as np
 import torch
 
-from lightwheel_sdk.loader import ENDPOINT
+try:
+    from lightwheel_sdk.loader import ENDPOINT
+except ImportError:
+    from lightwheel_sdk.loader import lw_client
+
+    ENDPOINT = os.environ.get("LW_API_ENDPOINT", getattr(lw_client, "host", ""))
 from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import RewardTermCfg as RewTerm

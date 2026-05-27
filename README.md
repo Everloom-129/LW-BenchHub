@@ -130,6 +130,40 @@ python ./lw_benchhub/scripts/rl/play.py \
     --task_config lerobot_liftobj_state_play
 ```
 
+#### Policy Benchmark Results Dashboard
+
+Start the remote environment server in one terminal:
+
+```bash
+python ./lw_benchhub/scripts/env_server.py --headless --enable_cameras
+```
+
+Run a checkpoint-free Franka/Panda rollout benchmark in another terminal. Results are exported under `results/` with a metrics table, per-rollout metadata, one success example and one failure example when present, rollout videos, and init/end camera plus scene images:
+
+```bash
+./run_droid_franka_benchmark.sh results/droid_franka_eval --episodes 10 --max_steps 200
+```
+
+If you have a trained policy checkpoint/config, run policy evaluation with the same artifact layout:
+
+```bash
+./run_policy_benchmark.sh path/to/droid_franka_policy.yml results/droid_franka_policy_eval \
+  --overrides --env_cfg:robot Panda --env_cfg:video true --test_num 10
+```
+
+Open the web dashboard:
+
+```bash
+python -m pip install -e ".[dashboard]"
+streamlit run ./lw_benchhub/scripts/policy/dashboard.py -- --results_dir ./results
+```
+
+Validate that a completed run exported the expected table, videos, and images:
+
+```bash
+python ./lw_benchhub/scripts/policy/validate_results.py ./results/droid_franka_eval
+```
+
 
 
 ## Project Structure
