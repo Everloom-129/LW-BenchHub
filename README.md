@@ -130,7 +130,7 @@ python ./lw_benchhub/scripts/rl/play.py \
     --task_config lerobot_liftobj_state_play
 ```
 
-#### Policy Benchmark Results Dashboard
+### Policy Benchmark Results Dashboard
 
 Start the remote environment server in one terminal:
 
@@ -163,6 +163,20 @@ Validate that a completed run exported the expected table, videos, and images:
 ```bash
 python ./lw_benchhub/scripts/policy/validate_results.py ./results/droid_franka_eval
 ```
+
+### Locomotion Policy Demo (G1)
+
+Record a video of the bundled Unitree **G1 locomotion policy** (`loco.onnx`) walking in
+simulation — no teleoperation device required. The script drives the same low-level
+whole-body controller used by the teleop pipeline with a scripted forward-walk command,
+renders headless, and exports an mp4 to `results/`:
+
+```bash
+python ./lw_benchhub/scripts/demo/g1_loco_walk.py --out results/g1_loco_walk.mp4
+```
+
+Optional flags: `--vx` (forward speed in m/s, default `0.3`), `--settle_steps` (steps to
+stand before walking), and `--walk_steps` (steps to walk forward).
 
 
 
