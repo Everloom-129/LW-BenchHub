@@ -79,6 +79,10 @@ class BasePolicy(ABC):
 
         obs, _, terminated, _, extras = task_env.step(action)
         terminated = bool(torch.as_tensor(terminated).any().item())
+        if isinstance(usr_args, dict):
+            usr_args["_rollout_step_count"] = int(usr_args.get("_rollout_step_count", 0)) + 1
+            usr_args["_last_observation"] = obs
+            usr_args["_last_extras"] = extras
         return obs, terminated, extras
 
     def encode_obs(self, observation: Dict[str, Any], transpose: bool = True, keep_dim_env: bool = False) -> Dict[str, Any]:

@@ -54,7 +54,10 @@ class EnvService:
         if not path:
             return obj
         for seg in path.split('.'):
-            obj = getattr(obj, seg)
+            if isinstance(obj, dict) and seg in obj:
+                obj = obj[seg]
+            else:
+                obj = getattr(obj, seg)
         return obj
 
     # ---- RPC primitives ----
